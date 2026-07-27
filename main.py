@@ -1,6 +1,7 @@
 import todo
 
 options = ["1", "2"]
+task = todo.task()
 
 while True:
     print("1. Add a new task")
@@ -10,10 +11,10 @@ while True:
 
     if choice == "1":
         date = input("Enter date task must be completed by (YYYY-MM-DD): ")
-        if todo.checkDate(date):
+        if task.checkDate(date):
             time = input("Enter what time the task must be completed by (HH:MM): ")
-            if todo.checkTime(time):
-                todo.setDate(date, time)
+            if task.checkTime(time):
+                task.setDate(date, time)
                 info = input("Enter task information: ")
                 # figure out how to store the task information with the date and time
             else:
