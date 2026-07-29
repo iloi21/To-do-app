@@ -15,7 +15,7 @@ class Task:
 
     def checkTime(self, time):
         try:
-            datetime.strptime(time, '%H:%M')
+            datetime.strptime(time, '%H:%M %p')
             return True
         except ValueError:
             return False
@@ -29,6 +29,8 @@ class Task:
         if not self.checkTime(time):
             print("Invalid time format. Please use HH:MM.")
             return
+
+        time24 = datetime.strptime(time, '%I:%M %p').strftime('%H:%M')
 
         if date not in self.task:
             self.task[date] = {}
@@ -52,3 +54,14 @@ class Task:
             print(f"Task for {date} at {time} marked as completed.")
         else:
             print(f"No task found for {date} at {time}.")
+
+    def showTask(self):
+        if not self.task:
+            print("No tasks available.")
+            return
+
+        for date in sorted(self.task.keys()):
+            print(f"Tasks for {date}:")
+            for time in sorted(self.task[date].keys()):
+                desc = self.task[date][time]["description"]
+                print(f"  {time} - {desc}")
