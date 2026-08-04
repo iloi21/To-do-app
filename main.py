@@ -1,19 +1,21 @@
 import todo
 
-options = ["1", "2", "3"]
+options = ["1", "2", "3", "4", "5"]
 task = todo.Task()
 
 while True:
     print("1. Add a new task")
-    print("2. Mark a task as completed")
-    print("3. Exit")
+    print("2. Show all tasks")
+    print("3. Mark a task as completed")
+    print("4. Show number of flowers earned")
+    print("5. Exit")
 
     choice = input("Enter menu choice: ")
 
     if choice == "1":
         date = input("Enter date task must be completed by (YYYY-MM-DD): ")
         if task.checkDate(date):
-            time = input("Enter what time the task must be completed by (HH:MM): ")
+            time = input("Enter what time the task must be completed by (HH:MM AM/PM): ")
             if task.checkTime(time):
                 desc = input("Enter task description: ")
                 task.setTask(date, desc, time)
@@ -24,6 +26,8 @@ while True:
             print("Invalid date format. Please use YYYY-MM-DD.")
             continue
     elif choice == "2":
+        task.showTask()
+    elif choice == "3":
         date = input("Enter the date of the task to mark as completed (YYYY-MM-DD): ")
         if task.checkDate(date):
             if date in task.task:
@@ -37,10 +41,12 @@ while True:
         else:
             print("Invalid date format. Please use YYYY-MM-DD.")
             continue
-    elif choice == "3":
+    elif choice == "4":
+        task.checkFlowers()
+    elif choice == "5":
         print("Thank you for using the task manager, please come again :).")
         break
 
     if choice not in options:
-        print("Invalid choice. Please enter 1, 2, or 3.")
+        print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
         continue
