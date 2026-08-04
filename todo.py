@@ -4,10 +4,13 @@ from datetime import datetime
 
 class Task:
     def __init__(self):
+        # For storing tasks (date is key, value is a dictionary where time is key and description is value)
         self.task = {}
+        # Counter for flowers (reward system)
         self.flowers = 0
 
     def checkDate(self, date):
+        # checking if date is valid
         try:
             datetime.strptime(date, '%Y-%m-%d')
             return True
@@ -15,6 +18,7 @@ class Task:
             return False
 
     def checkTime(self, time):
+        # checking if time is valid
         try:
             datetime.strptime(time, '%H:%M %p')
             return True
@@ -22,7 +26,7 @@ class Task:
             return False
 
     def setTask(self, date, desc, time):
-        
+        # will not move on if the date or time is invalid, and will print an error message
         if not self.checkDate(date):
             print("Invalid date format. Please use YYYY-MM-DD.")
             return
@@ -32,33 +36,38 @@ class Task:
             return
 
         time24 = datetime.strptime(time, '%I:%M %p').strftime('%H:%M')
-
+        # adds new date if it's not already in the system
         if date not in self.task:
             self.task[date] = {}
-
+        # adds the time and description of the task
         self.task[date][time] = {"description": desc}
-
+        # confirmation that task has been added to system
         print(f"Task set for {date} at {time}: {desc}")
 
     def taskdone(self, date, time):
+        # checking if date and time are valid to mark the task as completed
+        # will not move on if the date or time is invalid, and will print an error message
         if not self.checkDate(date):
             print("Invalid date format. Please use YYYY-MM-DD.")
             return
         if not self.checkTime(time):
             print("Invalid time format. Please use HH:MM.")
             return
-
+        # will mark task as completed if date and time are valid, and will print a confirmation message
         if date in self.task and time in self.task[date]:
             del self.task[date][time]
             if not self.task[date]:  # If no tasks left for the date, remove the date entry
                 del self.task[date]
             print(f"Task for {date} at {time} marked as completed.")
+            # gives reward after marking task as completed, and will print a confirmation message
             print("You have earned a flower for completing a task!")
             self.flowers += 1
         else:
+            # If the date or time is not found in the system, it will say that it wasn't
             print(f"No task found for {date} at {time}.")
 
     def showTask(self):
+        # displays all tasks in the system, sorted by date and time
         if not self.task:
             print("No tasks available.")
             return
@@ -70,8 +79,9 @@ class Task:
                 print(f"  {time} - {desc}")
 
     def checkFlowers(self):
+        # allows user to check how many flowers they have earned, and will print a message based on the number of flowers earned
         if self.flowers < 10:
-            print(f"You have {self.flowers} flowers. Keep completing tasks to earn more!")
+            print(f"You have {self.flowers} flowers. Keep completing tasks to earn a bouquet!")
         elif self.flowers == 10:
             print("Great job! you have 10 flowers! You made yourself a bouquet! Keep earning more to create a garden (20+ flowers)! XD")
         elif self.flowers == 20:
