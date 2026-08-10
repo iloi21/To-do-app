@@ -9,6 +9,15 @@ class Task:
         # Counter for flowers (reward system)
         self.flowers = 0
 
+# Helper functions that check for stuff
+    def checktask(self):
+        # checking if there are any tasks in the system
+        if not self.task:
+            return True
+        else:
+            return False
+        
+
     def checkDate(self, date):
         # checking if date is valid
         try:
@@ -24,6 +33,8 @@ class Task:
             return True
         except ValueError:
             return False
+
+    # Main functions that help with tasks
 
     def setTask(self, date, desc, time):
         # will not move on if the date or time is invalid, and will print an error message
@@ -44,33 +55,31 @@ class Task:
         # confirmation that task has been added to system
         print(f"Task set for {date} at {time}: {desc}")
 
-    def taskdone(self, date, time):
+    def taskdone(self, date, time):    
         # checking if date and time are valid to mark the task as completed
         # will not move on if the date or time is invalid, and will print an error message
         if not self.checkDate(date):
             print("Invalid date format. Please use YYYY-MM-DD.")
             return
         if not self.checkTime(time):
-            print("Invalid time format. Please use HH:MM.")
-            return
+                print("Invalid time format. Please use HH:MM.")
+                return
         # will mark task as completed if date and time are valid, and will print a confirmation message
         if date in self.task and time in self.task[date]:
             del self.task[date][time]
             if not self.task[date]:  # If no tasks left for the date, remove the date entry
                 del self.task[date]
-            print(f"Task for {date} at {time} marked as completed.")
-            # gives reward after marking task as completed, and will print a confirmation message
-            print("You have earned a flower for completing a task!")
-            self.flowers += 1
-        else:
-            # If the date or time is not found in the system, it will say that it wasn't
-            print(f"No task found for {date} at {time}.")
+                print(f"Task for {date} at {time} marked as completed.")
+                # gives reward after marking task as completed, and will print a confirmation message
+                print("You have earned a flower for completing a task!")
+                self.flowers += 1
+            else:
+                # If the date or time is not found in the system, it will say that it wasn't
+                print(f"No task found for {date} at {time}.")
+    
 
     def showTask(self):
         # displays all tasks in the system, sorted by date and time
-        if not self.task:
-            print("No tasks available.")
-            return
 
         for date in sorted(self.task.keys()):
             print(f"Tasks for {date}:")
@@ -79,21 +88,33 @@ class Task:
                 print(f"  {time} - {desc}")
     
     def deleteTask(self, date, time):
+       # deletes key from dictionary (along with value) if date and time are valid, and will print a confirmation message
+        if not self.checkDate(date):
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            return
+        if not self.checkTime(time):
+            print("Invalid time format. Please use HH:MM.")
+            return
         if date in self.task and time in self.task[date]:
             del self.task[date][time]
             if not self.task[date]:  # If no tasks left for the date, remove the date entry
                 del self.task[date]
             print(f"Task for {date} at {time} deleted.")
             print(f"Deleting tasks do not earn you a flower, but you can always add a new task to earn one!")
+        else:
+            print(f"No task found for {date} at {time}.")
 
     def rescheduleTask(self, date, time, new_date, new_time):
+        # If date and time = valid, reschedule
         if date in self.task and time in self.task[date]:
-            desc = self.task[date][time]["description"]
-            del self.task[date][time]
+            desc = self.task[date][time]["description"] # keeps description in temp var
+            del self.task[date][time] # deletes old date and time
             if not self.task[date]:  # If no tasks left for the date, remove the date entry
                 del self.task[date]
-            self.setTask(new_date, desc, new_time)
+            self.setTask(new_date, desc, new_time) # sets new time and date with old description
             print(f"Task rescheduled from {date} at {time} to {new_date} at {new_time}.")
+
+    # reward system for completing tasks
 
     def checkFlowers(self):
         # allows user to check how many flowers they have earned, and will print a message based on the number of flowers earned

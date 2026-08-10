@@ -22,34 +22,44 @@ while True:
                 desc = input("Enter task description: ")
                 task.setTask(date, desc, time)
             else:
-                print("Invalid time format. Please use HH:MM.")
+                print("Invalid time format. Please use HH:MM AM/PM.")
                 continue
         else:
             print("Invalid date format. Please use YYYY-MM-DD.")
             continue
     elif choice == "2":
-        task.showTask()
-    elif choice == "3":
-        date = input("Enter the date of the task to mark as completed (YYYY-MM-DD): ")
-        if task.checkDate(date):
-            if date in task.task:
-                time = input("Enter the time of the task to mark as completed (HH:MM): ")
-                if task.checkTime(time):
-                    task.taskdone(date, time)
-                elif time not in task.task[date]:
-                    print(f"No task found for {date} at {time}.")
-            else:
-                print(f"No task found for {date}.")
-        else:
-            print("Invalid date format. Please use YYYY-MM-DD.")
+        if not task.checktask():
+            print("You don't have any tasks added :)")
             continue
+        else:
+            task.showTask()
+    elif choice == "3":
+        if not task.checktask():
+            print("You don't have any tasks to mark as completed. :)")
+            continue
+            date = input("Enter the date of the task to mark as completed (YYYY-MM-DD): ")
+            if task.checkDate(date):
+                if date in task.task:
+                    time = input("Enter the time of the task to mark as completed (HH:MM AM/PM): ")
+                    if task.checkTime(time):
+                        task.taskdone(date, time)
+                    elif time not in task.task[date]:
+                        print(f"No task found for {date} at {time}.")
+                else:
+                    print(f"No task found for {date}.")
+            else:
+                print("Invalid date format. Please use YYYY-MM-DD.")
+                continue
     elif choice == "4":
         task.checkFlowers()
     elif choice == "5":
+        if not task.checktask():
+            print("You don't have any tasks to delete. :)")
+            continue
         date = input("Enter the date of the task to delete (YYYY-MM-DD): ")
         if task.checkDate(date):
             if date in task.task:
-                time = input("Enter the time of the task to delete (HH:MM): ")
+                time = input("Enter the time of the task to delete (HH:MM AM/PM): ")
                 if task.checkTime(time):
                     task.deleteTask(date, time)
                 elif time not in task.task[date]:
@@ -60,10 +70,13 @@ while True:
             print("Invalid date format. Please use YYYY-MM-DD.")
             continue
     elif choice == "6":
+        if not task.checktask():
+            print("You don't have any tasks to reschedule. :)")
+            continue
         date = input("Enter the date of the task to reschedule (YYYY-MM-DD): ")
         if task.checkDate(date):
             if date in task.task:
-                time = input("Enter the time of the task to reschedule (HH:MM): ")
+                time = input("Enter the time of the task to reschedule (HH:MM AM/PM): ")
                 if task.checkTime(time):
                     new_date = input("Enter the new date for the task (YYYY-MM-DD): ")
                     if task.checkDate(new_date):
