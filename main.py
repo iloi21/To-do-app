@@ -1,6 +1,6 @@
 import todo
 
-options = ["1", "2", "3", "4", "5"]
+options = ["1", "2", "3", "4", "5", "6", "7"]
 task = todo.Task()
 
 while True:
@@ -8,7 +8,9 @@ while True:
     print("2. Show all tasks")
     print("3. Mark a task as completed")
     print("4. Show number of flowers earned")
-    print("5. Exit")
+    print("5. Delete a task")
+    print("6. Reschedule a task")
+    print("7. Exit")
 
     choice = input("Enter menu choice: ")
 
@@ -44,9 +46,45 @@ while True:
     elif choice == "4":
         task.checkFlowers()
     elif choice == "5":
+        date = input("Enter the date of the task to delete (YYYY-MM-DD): ")
+        if task.checkDate(date):
+            if date in task.task:
+                time = input("Enter the time of the task to delete (HH:MM): ")
+                if task.checkTime(time):
+                    task.deleteTask(date, time)
+                elif time not in task.task[date]:
+                    print(f"No task found for {date} at {time}.")
+            else:
+                print(f"No task found for {date}.")
+        else:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            continue
+    elif choice == "6":
+        date = input("Enter the date of the task to reschedule (YYYY-MM-DD): ")
+        if task.checkDate(date):
+            if date in task.task:
+                time = input("Enter the time of the task to reschedule (HH:MM): ")
+                if task.checkTime(time):
+                    new_date = input("Enter the new date for the task (YYYY-MM-DD): ")
+                    if task.checkDate(new_date):
+                        new_time = input("Enter the new time for the task (HH:MM AM/PM): ")
+                        if task.checkTime(new_time):
+                            task.rescheduleTask(date, time, new_date, new_time)
+                        else:
+                            print("Invalid new time format. Please use HH:MM AM/PM.")
+                    else:
+                        print("Invalid new date format. Please use YYYY-MM-DD.")
+                elif time not in task.task[date]:
+                    print(f"No task found for {date} at {time}.")
+            else:
+                print(f"No task found for {date}.")
+        else:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            continue
+    elif choice == "7":
         print("Thank you for using the task manager, please come again :).")
         break
 
     if choice not in options:
-        print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
+        print("Invalid choice. Please enter 1, 2, 3, 4, 5, 6, or 7.")
         continue

@@ -77,6 +77,23 @@ class Task:
             for time in sorted(self.task[date].keys()):
                 desc = self.task[date][time]["description"]
                 print(f"  {time} - {desc}")
+    
+    def deleteTask(self, date, time):
+        if date in self.task and time in self.task[date]:
+            del self.task[date][time]
+            if not self.task[date]:  # If no tasks left for the date, remove the date entry
+                del self.task[date]
+            print(f"Task for {date} at {time} deleted.")
+            print(f"Deleting tasks do not earn you a flower, but you can always add a new task to earn one!")
+
+    def rescheduleTask(self, date, time, new_date, new_time):
+        if date in self.task and time in self.task[date]:
+            desc = self.task[date][time]["description"]
+            del self.task[date][time]
+            if not self.task[date]:  # If no tasks left for the date, remove the date entry
+                del self.task[date]
+            self.setTask(new_date, desc, new_time)
+            print(f"Task rescheduled from {date} at {time} to {new_date} at {new_time}.")
 
     def checkFlowers(self):
         # allows user to check how many flowers they have earned, and will print a message based on the number of flowers earned
