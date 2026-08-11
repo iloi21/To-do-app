@@ -10,12 +10,13 @@ class Task:
         self.flowers = 0
 
 # Helper functions that check for stuff
-    def checktask(self):
+    def checktask(self): # This function needs to be used in main
         # checking if there are any tasks in the system
-        if not self.task:
-            return True
-        else:
+        try:
+            self.task
+        except AttributeError:
             return False
+        
         
 
     def checkDate(self, date):
